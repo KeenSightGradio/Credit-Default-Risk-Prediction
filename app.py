@@ -46,7 +46,6 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
         return "Credit Default Risk Is Detected ⚠️"
   
 gradient_input = [
-    gr.HTML("<h2>Let's train a model</h2>"),
     gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
     gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate")
 ]
@@ -60,7 +59,7 @@ gradient_output = [
 
 inp = [
     
-                    gr.HTML("<h2>Please fill the form to predict the credit default risk!</h2>"),
+                    
                     gr.Slider(label="Age ", minimum=1, maximum=120),
                     gr.Slider(label="Income", minimum=100, maximum=6000000, step = 1000),
                     gr.Radio(label="Home Ownership", choices = [("Rent", 0), ("Own", 1), ("Mortgage", 2), ("Other", 3)]),
@@ -82,8 +81,6 @@ inp = [
                 ]
                 
 output = [
-    
-    gr.HTML("<h2>Predict is:</h2>"),
     gr.Textbox(label="Prediction")
     ]
 
@@ -93,12 +90,15 @@ one = gr.Interface(
     inputs = gradient_input,
     outputs = gradient_output,  
     submit_btn = "Train",
+    title="Train you own model!"
+    
 )
 two = gr.Interface(
     fn = predict_credit_risk,
     inputs = inp,
     outputs = output, 
-    submit_btn="Predict"
+    submit_btn="Predict",
+    title="Predict Credit Default Risk!"
 )
 demo = gr.TabbedInterface([one, two], ["Train", "Predict"])
 
