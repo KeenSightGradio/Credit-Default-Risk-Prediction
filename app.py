@@ -41,68 +41,27 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
     prediction = models[0].predict(input_data)
     
     if prediction[0] == 0:
-        return "No Credit Default Risk Detected"
+        return "No Credit Default Risk Is Detected ✅"
     else:
-        return "Credit Default Risk Detected"
+        return "Credit Default Risk Is Detected ⚠️"
   
-# Create Gradio interface
-def app_interface():# Custom CSS
-    custom_css = """
-    .logo-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+gradient_input = [
+    gr.HTML("<h2>Let's train a model</h2>"),
+    gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate")
+]
+        
+gradient_output = [
+    gr.Textbox(label="Accuracy Score"),
+    gr.Textbox(label="Precision Score"),
+    gr.Textbox(label="Recall Score"),
+    gr.Textbox(label="F1 Score"),
+]
 
-    .logo-image {
-        width: 100px;
-        height: 100px;
-        margin-right: 10px;
-    }
-    """
-
-    # Custom HTML
-    custom_html = """
-    <div class="logo-container">
-        <img class="logo-image" src="C:/Users/hp/Credit-Default-Risk-Prediction/logo.png" alt="Logo">
-        <h1>My Gradio App</h1>
-    </div>
-    """
-
-# iface.launch(inline_css=custom_css, layout=custom_html)
-
-
+inp = [
     
-    with gr.Blocks(css=custom_css) as interface:
-        # gr.HTML(custom_html)
-        with gr.Row("Credit Default Risk Prediction"):
-            # gr.Image("C:/Users/hp/Credit-Default-Risk-Prediction/logo.png", type="filepath")
-            with gr.Column("Model Training "):
-                gr.HTML("<h2>Train your own model!</h2>")
-                    
-                with gr.Row("Gradient Boost Regressor"):
-                    gr.HTML("<h2>Gradient Boost Regressor Model</h2>")
-                with gr.Row(""):
-                    gradient_input = [
-                        gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
-                        gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate")
-                    ]
-                with gr.Row(""):
-                    gradient_output = [
-                        gr.Textbox(label="Accuracy Score"),
-                        gr.Textbox(label="Precision Score"),
-                        gr.Textbox(label="Recall Score"),
-                        gr.Textbox(label="F1 Score"),
-                    ]
-                    
-                    gradient_train_button = gr.Button(value="Train Gradient Boost Regressor Model")
-                    
-                
-            with gr.Column("Please fill the form to predict credit default risk!"):
-                gr.HTML("<h2>Please fill the form to predict credit default risk!</h2>")
-                
-                inp = [
-                    gr.Slider(label="Age", minimum=1, maximum=120),
+                    gr.HTML("<h2>Please fill the form to predict the credit default risk!</h2>"),
+                    gr.Slider(label="Age ", minimum=1, maximum=120),
                     gr.Slider(label="Income", minimum=100, maximum=6000000, step = 1000),
                     gr.Radio(label="Home Ownership", choices = [("Rent", 0), ("Own", 1), ("Mortgage", 2), ("Other", 3)]),
                                 
@@ -115,20 +74,33 @@ def app_interface():# Custom CSS
                     
                     gr.Slider(label="Loan Amount", minimum=0, maximum=500000, step=1000),
                     gr.Slider(label="Loan Interest Rate", minimum=0, maximum=100, step=5),
-                    gr.Slider(label="Loan Percent Income", minimum=0, maximum=100, step=1),
+                    gr.Slider(label="Loan Percentage From Income", minimum=0, maximum=100, step=1),
                     
                     gr.Radio(label="Default History", choices=[("Yes",1), ("No", 0)]),
                     gr.Slider(label="Credit History Length", minimum=0, maximum=100, step=5),
         
                 ]
                 
-                output = [gr.Textbox(label="Prediction")]
-                predict_button = gr.Button(value="Credit Default Risk Prediction")
-                
-        gradient_train_button.click(runner, inputs=gradient_input, outputs=gradient_output)
-        predict_button.click(predict_credit_risk, inputs=inp, outputs=output)
+output = [
+    
+    gr.HTML("<h2>Predict is:</h2>"),
+    gr.Textbox(label="Prediction")
+    ]
 
-    interface.launch()
+
+one = gr.Interface(
+    fn = runner,
+    inputs = gradient_input,
+    outputs = gradient_output,  
+    submit_btn = "Train",
+)
+two = gr.Interface(
+    fn = predict_credit_risk,
+    inputs = inp,
+    outputs = output, 
+    submit_btn="Predict"
+)
+demo = gr.TabbedInterface([one, two], ["Train", "Predict"])
 
 if __name__ == "__main__":
-    app_interface()
+    demo.launch()
