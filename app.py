@@ -46,11 +46,37 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
         return "Credit Default Risk Detected"
   
 # Create Gradio interface
-def app_interface():
-    with gr.Blocks() as interface:
-        gr.HTML("<img src='keensight_logo.png' alt='Company Logo'>")
+def app_interface():# Custom CSS
+    custom_css = """
+    .logo-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .logo-image {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+    """
+
+    # Custom HTML
+    custom_html = """
+    <div class="logo-container">
+        <img class="logo-image" src="C:/Users/hp/Credit-Default-Risk-Prediction/logo.png" alt="Logo">
+        <h1>My Gradio App</h1>
+    </div>
+    """
+
+# iface.launch(inline_css=custom_css, layout=custom_html)
+
+
+    
+    with gr.Blocks(css=custom_css) as interface:
+        # gr.HTML(custom_html)
         with gr.Row("Credit Default Risk Prediction"):
-            
+            # gr.Image("C:/Users/hp/Credit-Default-Risk-Prediction/logo.png", type="filepath")
             with gr.Column("Model Training "):
                 gr.HTML("<h2>Train your own model!</h2>")
                     
@@ -72,8 +98,8 @@ def app_interface():
                     gradient_train_button = gr.Button(value="Train Gradient Boost Regressor Model")
                     
                 
-            with gr.Column("Please fill the form to predict insurance cost!"):
-                gr.HTML("<h2>Please fill the form to predict insurance cost!</h2>")
+            with gr.Column("Please fill the form to predict credit default risk!"):
+                gr.HTML("<h2>Please fill the form to predict credit default risk!</h2>")
                 
                 inp = [
                     gr.Slider(label="Age", minimum=1, maximum=120),
