@@ -90,7 +90,8 @@ one = gr.Interface(
     inputs = gradient_input,
     outputs = gradient_output,  
     submit_btn = "Train",
-    title="Train you own model!"
+    title="Train you own model!",
+    description="<img src='https://i.ibb.co/Bw08434/logo-1.png' alt='Logo' style='width:230px;height:100px;border-radius:5px;box-shadow:2px 2px 5px 0px rgba(0,0,0,0.75);background-color:black;'><br>",
     
 )
 two = gr.Interface(
@@ -98,7 +99,8 @@ two = gr.Interface(
     inputs = inp,
     outputs = output, 
     submit_btn="Predict",
-    title="Predict Credit Default Risk!"
+    title="Predict Credit Default Risk!",
+    description="<img src='https://i.ibb.co/Bw08434/logo-1.png' alt='Logo' style='width:230px;height:100px;border-radius:5px;box-shadow:2px 2px 5px 0px rgba(0,0,0,0.75);background-color:black;'><br>Predict credit default risk of an instance here!!",
 )
 demo = gr.TabbedInterface([one, two], ["Train", "Predict"])
 
