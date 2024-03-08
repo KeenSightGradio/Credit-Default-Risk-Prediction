@@ -1,8 +1,29 @@
 import gradio as gr
 import pandas as pd
 import pickle
-
 from train_model.train import runner
+css = """
+body {
+    background-color: #222;
+    color: #eee;
+}
+
+.gradio-interface {
+    background-color: #333;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.gradio-interface .output-container {
+    background-color: #444;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.gradio-interface .output-container img {
+    max-width: 100%;
+}
+"""
 
 with open("C:/Users/hp/Credit-Default-Risk-Prediction/models/cdr_model.pickle", "rb") as f:
     random_model = pickle.load(f)
@@ -47,7 +68,10 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
   
 gradient_input = [
     gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
-    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate")
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate"),
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Gamma"),
+    gr.Slider(minimum=5, maximum=25, label="Max Depth"),
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Test Size")
 ]
         
 gradient_output = [
@@ -55,40 +79,40 @@ gradient_output = [
     gr.Textbox(label="Precision Score"),
     gr.Textbox(label="Recall Score"),
     gr.Textbox(label="F1 Score"),
+    gr.Image(label="ROC Curve"),
+    gr.Image(label="Learning Curve")
 ]
 
-inp = [
-    
-                    
-                    gr.Slider(label="Age ", minimum=1, maximum=120),
-                    gr.Slider(label="Income", minimum=100, maximum=6000000, step = 1000),
-                    gr.Radio(label="Home Ownership", choices = [("Rent", 0), ("Own", 1), ("Mortgage", 2), ("Other", 3)]),
-                                
-                    gr.Slider(label="Employment Length", minimum=0, maximum=135, step=3),
-                    gr.Radio(label="Loan Intent", choices=[
-                        ('Personal', 0),( 'Education',1), ('Medical',2), ('Venture',3), ('Home Improvement',4),
-                        ('Debt Consolidation',5)]),
-                    gr.Radio(label="Loan Grade", choices=[
-                        ('A', 0),( 'B',1), ('C',2), ('D',3), ('E',4),('F',5),('G', 6)]),
-                    
-                    gr.Slider(label="Loan Amount", minimum=0, maximum=500000, step=1000),
-                    gr.Slider(label="Loan Interest Rate", minimum=0, maximum=100, step=5),
-                    gr.Slider(label="Loan Percentage From Income", minimum=0, maximum=100, step=1),
-                    
-                    gr.Radio(label="Default History", choices=[("Yes",1), ("No", 0)]),
-                    gr.Slider(label="Credit History Length", minimum=0, maximum=100, step=5),
+inp = [         
+            gr.Slider(label="Age ", minimum=1, maximum=120),
+            gr.Slider(label="Income", minimum=100, maximum=6000000, step = 1000),
+            gr.Radio(label="Home Ownership", choices = [("Rent", 0), ("Own", 1), ("Mortgage", 2), ("Other", 3)]),
+                        
+            gr.Slider(label="Employment Length", minimum=0, maximum=135, step=3),
+            gr.Radio(label="Loan Intent", choices=[
+                ('Personal', 0),( 'Education',1), ('Medical',2), ('Venture',3), ('Home Improvement',4),
+                ('Debt Consolidation',5)]),
+            gr.Radio(label="Loan Grade", choices=[
+                ('A', 0),( 'B',1), ('C',2), ('D',3), ('E',4),('F',5),('G', 6)]),
+            
+            gr.Slider(label="Loan Amount", minimum=0, maximum=500000, step=1000),
+            gr.Slider(label="Loan Interest Rate", minimum=0, maximum=100, step=5),
+            gr.Slider(label="Loan Percentage From Income", minimum=0, maximum=100, step=1),
+            
+            gr.Radio(label="Default History", choices=[("Yes",1), ("No", 0)]),
+            gr.Slider(label="Credit History Length", minimum=0, maximum=100, step=5),
         
-                ]
+    ]
                 
 output = [
     gr.Textbox(label="Prediction")
     ]
 
-
 one = gr.Interface(
     fn = runner,
     inputs = gradient_input,
-    outputs = gradient_output,  
+    outputs = gradient_output,
+    css = css, 
     submit_btn = "Train",
     title="Train you own model!",
     description="<img src='https://i.ibb.co/Bw08434/logo-1.png' alt='Logo' style='width:230px;height:100px;border-radius:5px;box-shadow:2px 2px 5px 0px rgba(0,0,0,0.75);background-color:black;'><br>",
@@ -97,7 +121,8 @@ one = gr.Interface(
 two = gr.Interface(
     fn = predict_credit_risk,
     inputs = inp,
-    outputs = output, 
+    outputs = output,
+    css =css,
     submit_btn="Predict",
     title="Predict Credit Default Risk!",
     description="<img src='https://i.ibb.co/Bw08434/logo-1.png' alt='Logo' style='width:230px;height:100px;border-radius:5px;box-shadow:2px 2px 5px 0px rgba(0,0,0,0.75);background-color:black;'><br>Predict credit default risk of an instance here!!",
