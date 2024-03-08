@@ -68,10 +68,10 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
   
 gradient_input = [
     gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
-    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate"),
-    gr.Slider(minimum=0.00000000001, maximum=1, label="Gamma"),
-    gr.Slider(minimum=5, maximum=25, label="Max Depth"),
-    gr.Slider(minimum=0.00000000001, maximum=1, label="Test Size")
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate", step = 0.01),
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Gamma", step = 0.2),
+    gr.Slider(minimum=5, maximum=25, label="Max Depth", step = 1),
+    gr.Slider(minimum=0.00000000001, maximum=1, label="Test Size", step= 0.5)
 ]
         
 gradient_output = [

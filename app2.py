@@ -73,17 +73,17 @@ def predict_credit_risk(person_age,person_income,person_home_ownership,person_em
 def app_interface():# Custom CSS
     with gr.Blocks(css = css) as interface:
         gr.HTML("<img src='https://i.ibb.co/Bw08434/logo-1.png' alt='Logo' style='width:230px;height:100px;border-radius:5px;box-shadow:2px 2px 5px 0px rgba(0,0,0,0.75);background-color:black;'><br>",)
-        
+    
         with gr.Row("Credit Default Risk Prediction"):
             with gr.Column("Model Training "):
                 gr.HTML("<h2>Train your own model!</h2>")
         
                 gradient_input = [
                     gr.Slider(minimum=10, maximum=500, step = 5, label="Number of Estimators"),
-                    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate"),
-                    gr.Slider(minimum=0.00000000001, maximum=1, label="Gamma"),
-                    gr.Slider(minimum=5, maximum=25, label="Max Depth"),
-                    gr.Slider(minimum=0.00000000001, maximum=1, label="Test Size")]
+                    gr.Slider(minimum=0.00000000001, maximum=1, label="Learning Rate", step = 0.01),
+                    gr.Slider(minimum=0.00000000001, maximum=1, label="Gamma", step = 0.2),
+                    gr.Slider(minimum=5, maximum=25, label="Max Depth", step = 1),
+                    gr.Slider(minimum=0.00000000001, maximum=1, label="Test Size", step= 0.1)]
                     
                 
                 gradient_output = [
