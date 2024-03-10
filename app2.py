@@ -98,9 +98,8 @@ def app_interface():# Custom CSS
                     
                 gradient_train_button = gr.Button(value="Train Gradient Boost Regressor Model")
 
-                gr.HTML("<h3>Dataset link here: <a href='https://www.kaggle.com/datasets/sureshgupta/health-insurance-data-set'>Dataset</a>.</h3>")
+                gr.HTML("<h3>Dataset link here: <a href='https://www.kaggle.com/datasets/laotse/credit-risk-dataset'>Dataset</a>.</h3>")
                     
-                
             with gr.Column("Please fill the form to predict credit default risk!"):
                 gr.HTML("<h2>Please fill the form to predict credit default risk!</h2>")
                 
